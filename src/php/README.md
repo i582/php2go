@@ -1,0 +1,105 @@
+PHP Parser written in Go
+========================
+
+<img src="./parser.jpg" alt="PHP Parser written in Go" width="980"/>
+
+[![GoDoc](https://godoc.org/github.com/i582/php2go/src/php?status.svg)](https://godoc.org/github.com/i582/php2go/src/php)
+[![Build Status](https://travis-ci.org/z7zmey/php-parser.svg?branch=master)](https://travis-ci.org/z7zmey/php-parser)
+[![Go Report Card](https://goreportcard.com/badge/github.com/i582/php2go/src/php)](https://goreportcard.com/report/github.com/i582/php2go/src/php)
+[![Maintainability](https://api.codeclimate.com/v1/badges/950783b2e739db26e0ed/maintainability)](https://codeclimate.com/github/z7zmey/php-parser/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/950783b2e739db26e0ed/test_coverage)](https://codeclimate.com/github/z7zmey/php-parser/test_coverage)
+
+This project uses [goyacc](https://godoc.org/golang.org/x/tools/cmd/goyacc) and [ragel](https://www.colm.net/open-source/ragel/) tools to create PHP parser. It parses source code into [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree). It can be used to write static analysis, refactoring, metrics, code style formatting tools.
+
+#### Try it online: [demo](https://php-parser.com)
+
+Features:
+---------
+
+- Fully support PHP 5 and PHP 7 syntax
+- Abstract syntax tree (AST) representation
+- Traversing AST
+- Resolving namespaced names
+- Parsing syntax-invalid PHP files
+- Saving and printing free-floating comments and whitespaces
+
+Who Uses
+--------
+
+[VKCOM/noverify](https://github.com/VKCOM/noverify) - NoVerify is a pretty fast linter for PHP
+
+[quasilyte/phpgrep](https://github.com/quasilyte/phpgrep) - phpgrep is a tool for syntax-aware PHP code search
+
+Usage example
+-------
+
+```Golang
+package main
+
+import (
+	"fmt"
+	"os"
+
+	"github.com/i582/php2go/src/php/php7"
+	"github.com/i582/php2go/src/php/visitor"
+)
+
+func main() {
+	src := []byte(`<? echo "Hello world";`)
+
+	parser := php7.NewParser(src, "7.4")
+	parser.Parse()
+
+	for _, e := range parser.GetErrors() {
+		fmt.Println(e)
+	}
+
+	visitor := visitor.Dumper{
+		Writer:    os.Stdout,
+		Indent:    "",
+	}
+
+	rootNode := parser.GetRootNode()
+	rootNode.Walk(&visitor)
+}
+```
+
+Roadmap
+-------
+
+- Control Flow Graph (CFG)
+- PhpDocComment parser
+- Stabilize api
+
+Install
+-------
+
+```
+go get github.com/i582/php2go/src/php
+```
+
+CLI
+---
+
+```
+php-parser [flags] <path> ...
+```
+
+| flag  | type |                description                   |
+|-------|------|----------------------------------------------|
+| -p    | bool | print filepath                               |
+| -d    |string| dump format: [custom, go, json, pretty-json] |
+| -r    | bool | resolve names                                |
+| -ff   | bool | parse and show free floating strings         |
+| -prof |string| start profiler: [cpu, mem, trace]            |
+| -php5 | bool | parse as PHP5                                |
+
+Dump AST to stdout.
+
+Namespace resolver
+------------------
+
+Namespace resolver is a visitor that resolves nodes fully qualified name and saves into `map[node.Node]string` structure
+
+- For `Class`, `Interface`, `Trait`, `Function`, `Constant` nodes it saves name with current namespace.
+- For `Name`, `Relative`, `FullyQualified` nodes it resolves `use` aliases and saves a fully qualified name.

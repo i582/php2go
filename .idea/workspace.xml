@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="10bfa6b1-eefa-4d37-acbd-4178e7ee125e" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go Application" />
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" path="C:\Go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="f4121595-016c-4617-96e8-fe8e58423bf2" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="ProjectId" id="1g5jzxb1L43ZLUyCnAYZXFntOnG" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="GO_FMT" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="configurable.Global.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Module.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Project.GOPATH.is.expanded" value="true" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../noverify" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\projects\php2go\src\types" />
+      <recent name="C:\projects\php2go\src" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Build.go build main.go">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="php2go" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$" />
+      <package value="github.com/i582/php2go" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build github.com/i582/php2go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="php2go" />
+      <working_directory value="$PROJECT_DIR$" />
+      <parameters value="-i C:\projects\php2go\program\array.php" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="github.com/i582/php2go" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build github.com/i582/php2go/program/main" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="php2go" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/program/main/main.go" />
+      <package value="github.com/i582/php2go/program/main" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="php2go" />
+      <working_directory value="$PROJECT_DIR$" />
+      <parameters value="-i C:\projects\php2go\program\full.php" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestGenerator in github.com/i582/php2go/src/test (1)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="php2go" />
+      <working_directory value="$PROJECT_DIR$/src/test" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/i582/php2go/src/test" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^TestGenerator$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestTypesGenerateStruct in github.com/i582/php2go/src/test/types" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="php2go" />
+      <working_directory value="$PROJECT_DIR$/src/test/types" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/i582/php2go/src/test/types" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^TestTypesGenerateStruct$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="php2go" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="DIRECTORY" />
+      <package value="github.com/i582/php2go" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go test php2go" type="GoTestRunConfiguration" factoryName="Go Test" nameIsGenerated="true">
+      <module name="php2go" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="DIRECTORY" />
+      <package value="github.com/i582/php2go" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Go Build.go build main.go" />
+      <item itemvalue="Go Build.go build github.com/i582/php2go" />
+      <item itemvalue="Go Build.go build github.com/i582/php2go/program/main" />
+      <item itemvalue="Go Test.go test php2go" />
+      <item itemvalue="Go Test.TestTypesGenerateStruct in github.com/i582/php2go/src/test/types" />
+      <item itemvalue="Go Test.TestGenerator in github.com/i582/php2go/src/test (1)" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build main.go" />
+        <item itemvalue="Go Test.TestGenerator in github.com/i582/php2go/src/test (1)" />
+        <item itemvalue="Go Build.go build github.com/i582/php2go/program/main" />
+        <item itemvalue="Go Build.go build github.com/i582/php2go" />
+        <item itemvalue="Go Test.TestTypesGenerateStruct in github.com/i582/php2go/src/test/types" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Исправлены названия импортируемых пакетов в php-parser" />
+    <MESSAGE value="Добавлена первая версия union-типов" />
+    <MESSAGE value="Добавлена базовая поддержка CLI&#10;Добавлены тесты для генерации структур для типов" />
+    <MESSAGE value="Исправлен тест генератора" />
+    <MESSAGE value="Добавлена вторая версия union-типов&#10;&#10;Теперь поддерживается создание переменной с разными типами и возврат из функции разных типов" />
+    <MESSAGE value="Добавлена поддержка функции echo" />
+    <MESSAGE value="Добавлена обработка while&#10;Добавлены инкременты и декрименты&#10;Улучшена генерация переменных в условиях" />
+    <MESSAGE value="Добавлен lazy тип для вызова функций и его обработку&#10;&#10;Теперь можно вызывать функцию и типы выведутся правильно, однако, если тип переменной до вызова не входит в тип возвращаемый вызываемой функцией то будет ошибка TODO" />
+    <MESSAGE value="Переход от разных структур для различных наборов типов к одному типу Var, который объединяет любые типы&#10;&#10;Все связанное с генерацией предыдущих структур удалено" />
+    <MESSAGE value="Добавлена функция Bool для приведения значения к логическому типу, где это будет нужно" />
+    <MESSAGE value="Добавлен комментарий в сгенерированном файле" />
+    <MESSAGE value="Добавлена базовая поддержка массивов одного типа" />
+    <MESSAGE value="Добавлены сравнения для Var&#10;Добалена функция String для преобразования Var к строке" />
+    <MESSAGE value="Добавлен вывод типов для сравнений" />
+    <MESSAGE value="Добавлено выведение lazy типа для возвращаемого типа функции" />
+    <MESSAGE value="Добавлен флаг isBoolean, для вызова метода Bool" />
+    <MESSAGE value="Добавлено логическое ИЛИ, исправлена ошибка, когда в сложном логическом выражении, сбрасывался флаг inBoolean" />
+    <MESSAGE value="Улучшено README.md" />
+    <MESSAGE value="Добавлена частичная поддержка массив и ассоциативных массивов" />
+    <MESSAGE value="Добавлена поддержка обращения к массиву" />
+    <MESSAGE value="Добавлена поддержка присваивания элементу массива" />
+    <MESSAGE value="Добавлена поддержка $arr[] = elem" />
+    <MESSAGE value="Обновлено README.md" />
+    <MESSAGE value="Рефакторинг" />
+    <MESSAGE value="Обновлен README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Обновлен README.md" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="414" y="180" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597606275038">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="414" y="180" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597606275038" />
+    <state x="765" y="241" key="#com.intellij.ide.util.MemberChooser" timestamp="1597527863854">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="765" y="241" key="#com.intellij.ide.util.MemberChooser/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597527863854" />
+    <state x="725" y="66" width="1055" height="860" key="CommitChangelistDialog2" timestamp="1597608376084">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="725" y="66" width="1055" height="860" key="CommitChangelistDialog2/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597608376084" />
+    <state x="261" y="70" key="DiffContextDialog" timestamp="1597608115171">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="261" y="70" key="DiffContextDialog/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597608115171" />
+    <state x="740" y="280" key="FileChooserDialogImpl" timestamp="1597490080199">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="740" y="280" key="FileChooserDialogImpl/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597490080199" />
+    <state x="821" y="437" key="Github.Dialog.Accounts.Choose" timestamp="1597427158864">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="821" y="437" key="Github.Dialog.Accounts.Choose/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597427158864" />
+    <state width="1877" height="352" key="GridCell.Tab.0.bottom" timestamp="1597608493964">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="352" key="GridCell.Tab.0.bottom/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597608493964" />
+    <state width="1877" height="352" key="GridCell.Tab.0.center" timestamp="1597608493964">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="352" key="GridCell.Tab.0.center/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597608493964" />
+    <state width="1877" height="352" key="GridCell.Tab.0.left" timestamp="1597608493964">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="352" key="GridCell.Tab.0.left/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597608493964" />
+    <state width="1877" height="352" key="GridCell.Tab.0.right" timestamp="1597608493964">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="352" key="GridCell.Tab.0.right/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597608493964" />
+    <state width="1877" height="352" key="GridCell.Tab.1.bottom" timestamp="1597608493964">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="352" key="GridCell.Tab.1.bottom/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597608493964" />
+    <state width="1877" height="352" key="GridCell.Tab.1.center" timestamp="1597608493964">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="352" key="GridCell.Tab.1.center/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597608493964" />
+    <state width="1877" height="352" key="GridCell.Tab.1.left" timestamp="1597608493964">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="352" key="GridCell.Tab.1.left/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597608493964" />
+    <state width="1877" height="352" key="GridCell.Tab.1.right" timestamp="1597608493964">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="352" key="GridCell.Tab.1.right/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597608493964" />
+    <state x="461" y="170" key="SettingsEditor" timestamp="1597490354055">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="461" y="170" key="SettingsEditor/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597490354055" />
+    <state x="552" y="258" key="Vcs.Push.Dialog.v2" timestamp="1597608377677">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="552" y="258" key="Vcs.Push.Dialog.v2/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597608377677" />
+    <state x="784" y="283" width="585" height="616" key="find.popup" timestamp="1597606999267">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="784" y="283" width="585" height="616" key="find.popup/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597606999267" />
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1597593099115">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/-1920.0.1280.700/0.0.1920.1050@0.0.1920.1050" timestamp="1597593099115" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/src/solver/exprtype.go</url>
+          <line>53</line>
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/src/generator/walker.go</url>
+          <line>652</line>
+          <option name="timeStamp" value="108" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/src/generator/walker.go</url>
+          <line>644</line>
+          <option name="timeStamp" value="109" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="GoApplicationRunConfiguration">
+        <watch expression="meta.AllFunctions" language="go" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
