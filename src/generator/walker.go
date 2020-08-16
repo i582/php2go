@@ -109,33 +109,33 @@ func (g *GeneratorWalker) EnterNode(w walker.Walkable) bool {
 		}
 
 	case *binary.Plus:
-		return g.GenerateBinaryOp(n)
+		return g.GenerateBinaryOps(n)
 	case *binary.Minus:
-		return g.GenerateBinaryOp(n)
+		return g.GenerateBinaryOps(n)
 	case *binary.Mul:
-		return g.GenerateBinaryOp(n)
+		return g.GenerateBinaryOps(n)
 	case *binary.Div:
-		return g.GenerateBinaryOp(n)
+		return g.GenerateBinaryOps(n)
 	case *binary.Concat:
-		return g.GenerateBinaryOp(n)
+		return g.GenerateBinaryOps(n)
 
 	case *binary.NotEqual:
-		return g.GenerateBinaryOp(n)
+		return g.GenerateBinaryOps(n)
 	case *binary.Equal:
-		return g.GenerateBinaryOp(n)
+		return g.GenerateBinaryOps(n)
 	case *binary.Smaller:
-		return g.GenerateBinaryOp(n)
+		return g.GenerateBinaryOps(n)
 	case *binary.SmallerOrEqual:
-		return g.GenerateBinaryOp(n)
+		return g.GenerateBinaryOps(n)
 	case *binary.Greater:
-		return g.GenerateBinaryOp(n)
+		return g.GenerateBinaryOps(n)
 	case *binary.GreaterOrEqual:
-		return g.GenerateBinaryOp(n)
+		return g.GenerateBinaryOps(n)
 
 	case *binary.BooleanAnd:
-		return g.GenerateBinaryOp(n)
+		return g.GenerateBinaryOps(n)
 	case *binary.BooleanOr:
-		return g.GenerateBinaryOp(n)
+		return g.GenerateBinaryOps(n)
 
 	case *expr.PostInc:
 		n.Variable.Walk(g)
@@ -421,123 +421,60 @@ func (g *GeneratorWalker) GenerateIf(i *stmt.If) bool {
 	return false
 }
 
-func (g *GeneratorWalker) GenerateBinaryOp(n node.Node) bool {
+func (g *GeneratorWalker) generateBinaryOp(left node.Node, right node.Node, op string) {
+	leftIsFloat := solver.ExprType(g.ctx, left).Is(types.Float)
+	rightIsFloat := solver.ExprType(g.ctx, right).Is(types.Float)
+
+	needCastLeftToFloat := !leftIsFloat && rightIsFloat
+	needCastRightToFloat := leftIsFloat && !rightIsFloat
+
+	utils.WithTypeCast("float64", needCastLeftToFloat, g.Write, func() {
+		left.Walk(g)
+	})
+
+	g.Write(" " + op + " ")
+
+	utils.WithTypeCast("float64", needCastRightToFloat, g.Write, func() {
+		right.Walk(g)
+	})
+}
+
+func (g *GeneratorWalker) generateBinaryComparisonOp(left node.Node, right node.Node, op, fullopname string) {
+	g.ctx.InCompare = true
+	leftType := solver.ExprType(g.ctx, left)
+	rightType := solver.ExprType(g.ctx, right)
+	if !leftType.SingleType() {
+		left.Walk(g)
+		g.Write(fmt.Sprintf(".CompareWith%s(", utils.TransformType(rightType.String())))
+		right.Walk(g)
+		g.Write(", " + fullopname + ")")
+	} else {
+		left.Walk(g)
+		g.Write(" " + op + " ")
+		right.Walk(g)
+	}
+	g.ctx.InCompare = false
+}
+
+func (g *GeneratorWalker) generateBinaryLogicalOp(left node.Node, right node.Node, op string) {
+	g.ctx.InBoolean = true
+	left.Walk(g)
+	g.Write(" " + op + " ")
+	g.ctx.InBoolean = true
+	right.Walk(g)
+	g.ctx.InBoolean = false
+}
+
+func (g *GeneratorWalker) GenerateBinaryOps(n node.Node) bool {
 	switch n := n.(type) {
 	case *binary.Plus:
-		leftIsFloat := solver.ExprType(g.ctx, n.Left).Is(types.Float)
-		rightIsFloat := solver.ExprType(g.ctx, n.Right).Is(types.Float)
-
-		needLeftToFloat := !leftIsFloat && rightIsFloat
-		needRightToFloat := leftIsFloat && !rightIsFloat
-
-		if needLeftToFloat {
-			g.Write("float64(")
-		}
-
-		n.Left.Walk(g)
-
-		if needLeftToFloat {
-			g.Write(")")
-		}
-
-		g.Write(" + ")
-
-		if needRightToFloat {
-			g.Write("float64(")
-		}
-
-		n.Right.Walk(g)
-
-		if needRightToFloat {
-			g.Write(")")
-		}
-
+		g.generateBinaryOp(n.Left, n.Right, "+")
 	case *binary.Minus:
-		leftIsFloat := solver.ExprType(g.ctx, n.Left).Is(types.Float)
-		rightIsFloat := solver.ExprType(g.ctx, n.Right).Is(types.Float)
-
-		needLeftToFloat := !leftIsFloat && rightIsFloat
-		needRightToFloat := leftIsFloat && !rightIsFloat
-
-		if needLeftToFloat {
-			g.Write("float64(")
-		}
-
-		n.Left.Walk(g)
-
-		if needLeftToFloat {
-			g.Write(")")
-		}
-
-		g.Write(" - ")
-
-		if needRightToFloat {
-			g.Write("float64(")
-		}
-
-		n.Right.Walk(g)
-
-		if needRightToFloat {
-			g.Write(")")
-		}
-
+		g.generateBinaryOp(n.Left, n.Right, "-")
 	case *binary.Mul:
-		leftIsFloat := solver.ExprType(g.ctx, n.Left).Is(types.Float)
-		rightIsFloat := solver.ExprType(g.ctx, n.Right).Is(types.Float)
-
-		needLeftToFloat := !leftIsFloat && rightIsFloat
-		needRightToFloat := leftIsFloat && !rightIsFloat
-
-		if needLeftToFloat {
-			g.Write("float64(")
-		}
-
-		n.Left.Walk(g)
-
-		if needLeftToFloat {
-			g.Write(")")
-		}
-
-		g.Write(" * ")
-
-		if needRightToFloat {
-			g.Write("float64(")
-		}
-
-		n.Right.Walk(g)
-
-		if needRightToFloat {
-			g.Write(")")
-		}
-
+		g.generateBinaryOp(n.Left, n.Right, "*")
 	case *binary.Div:
-		leftIsFloat := solver.ExprType(g.ctx, n.Left).Is(types.Float)
-		rightIsFloat := solver.ExprType(g.ctx, n.Right).Is(types.Float)
-
-		needLeftToFloat := !leftIsFloat && rightIsFloat
-		needRightToFloat := leftIsFloat && !rightIsFloat
-
-		if needLeftToFloat {
-			g.Write("float64(")
-		}
-
-		n.Left.Walk(g)
-
-		if needLeftToFloat {
-			g.Write(")")
-		}
-
-		g.Write(" / ")
-
-		if needRightToFloat {
-			g.Write("float64(")
-		}
-
-		n.Right.Walk(g)
-
-		if needRightToFloat {
-			g.Write(")")
-		}
+		g.generateBinaryOp(n.Left, n.Right, "/")
 
 	case *binary.Concat:
 		n.Left.Walk(g)
@@ -545,116 +482,22 @@ func (g *GeneratorWalker) GenerateBinaryOp(n node.Node) bool {
 		n.Right.Walk(g)
 
 	case *binary.Equal:
-		g.ctx.InCompare = true
-		leftType := solver.ExprType(g.ctx, n.Left)
-		rightType := solver.ExprType(g.ctx, n.Right)
-		if !leftType.SingleType() {
-			n.Left.Walk(g)
-			g.Write(fmt.Sprintf(".CompareWith%s(", utils.TransformType(rightType.String())))
-			n.Right.Walk(g)
-			g.Write(", Equal)")
-		} else {
-			n.Left.Walk(g)
-			g.Write(" == ")
-			n.Right.Walk(g)
-		}
-		g.ctx.InCompare = false
-
+		g.generateBinaryComparisonOp(n.Left, n.Right, "==", "Equal")
 	case *binary.NotEqual:
-		g.ctx.InCompare = true
-		leftType := solver.ExprType(g.ctx, n.Left)
-		rightType := solver.ExprType(g.ctx, n.Right)
-		if !leftType.SingleType() {
-			n.Left.Walk(g)
-			g.Write(fmt.Sprintf(".CompareWith%s(", utils.TransformType(rightType.String())))
-			n.Right.Walk(g)
-			g.Write(", NotEqual)")
-		} else {
-			n.Left.Walk(g)
-			g.Write(" != ")
-			n.Right.Walk(g)
-		}
-		g.ctx.InCompare = false
-
+		g.generateBinaryComparisonOp(n.Left, n.Right, "!=", "NotEqual")
 	case *binary.Smaller:
-		g.ctx.InCompare = true
-		leftType := solver.ExprType(g.ctx, n.Left)
-		rightType := solver.ExprType(g.ctx, n.Right)
-		if !leftType.SingleType() {
-			n.Left.Walk(g)
-			g.Write(fmt.Sprintf(".CompareWith%s(", utils.TransformType(rightType.String())))
-			n.Right.Walk(g)
-			g.Write(", Smaller)")
-		} else {
-			n.Left.Walk(g)
-			g.Write(" < ")
-			n.Right.Walk(g)
-		}
-		g.ctx.InCompare = false
-
+		g.generateBinaryComparisonOp(n.Left, n.Right, "<", "Smaller")
 	case *binary.SmallerOrEqual:
-		g.ctx.InCompare = true
-		leftType := solver.ExprType(g.ctx, n.Left)
-		rightType := solver.ExprType(g.ctx, n.Right)
-		if !leftType.SingleType() {
-			n.Left.Walk(g)
-			g.Write(fmt.Sprintf(".CompareWith%s(", utils.TransformType(rightType.String())))
-			n.Right.Walk(g)
-			g.Write(", SmallerEqual)")
-		} else {
-			n.Left.Walk(g)
-			g.Write(" < ")
-			n.Right.Walk(g)
-		}
-		g.ctx.InCompare = false
-
+		g.generateBinaryComparisonOp(n.Left, n.Right, "<=", "SmallerEqual")
 	case *binary.Greater:
-		g.ctx.InCompare = true
-		leftType := solver.ExprType(g.ctx, n.Left)
-		rightType := solver.ExprType(g.ctx, n.Right)
-		if !leftType.SingleType() {
-			n.Left.Walk(g)
-			g.Write(fmt.Sprintf(".CompareWith%s(", utils.TransformType(rightType.String())))
-			n.Right.Walk(g)
-			g.Write(", Greater)")
-		} else {
-			n.Left.Walk(g)
-			g.Write(" > ")
-			n.Right.Walk(g)
-		}
-		g.ctx.InCompare = false
-
+		g.generateBinaryComparisonOp(n.Left, n.Right, ">", "Greater")
 	case *binary.GreaterOrEqual:
-		g.ctx.InCompare = true
-		leftType := solver.ExprType(g.ctx, n.Left)
-		rightType := solver.ExprType(g.ctx, n.Right)
-		if !leftType.SingleType() {
-			n.Left.Walk(g)
-			g.Write(fmt.Sprintf(".CompareWith%s(", utils.TransformType(rightType.String())))
-			n.Right.Walk(g)
-			g.Write(", GreaterEqual)")
-		} else {
-			n.Left.Walk(g)
-			g.Write(" >= ")
-			n.Right.Walk(g)
-		}
-		g.ctx.InCompare = false
+		g.generateBinaryComparisonOp(n.Left, n.Right, ">=", "GreaterEqual")
 
 	case *binary.BooleanAnd:
-		g.ctx.InBoolean = true
-		n.Left.Walk(g)
-		g.Write(" && ")
-		g.ctx.InBoolean = true
-		n.Right.Walk(g)
-		g.ctx.InBoolean = false
-
+		g.generateBinaryLogicalOp(n.Left, n.Right, "&&")
 	case *binary.BooleanOr:
-		g.ctx.InBoolean = true
-		n.Left.Walk(g)
-		g.Write(" || ")
-		g.ctx.InBoolean = true
-		n.Right.Walk(g)
-		g.ctx.InBoolean = false
+		g.generateBinaryLogicalOp(n.Left, n.Right, "||")
 	}
 
 	return false
