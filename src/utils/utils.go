@@ -31,3 +31,16 @@ func TransformType(t string) string {
 
 	return t
 }
+
+func WithTypeCast(t string, need bool, w func(string), f func()) {
+	if need {
+		w(t)
+		w("(")
+	}
+
+	f()
+
+	if need {
+		w(")")
+	}
+}
