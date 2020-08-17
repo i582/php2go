@@ -3,11 +3,12 @@
 function f() {
     $arr = ["5"];
 
-    $arr[] = "6";
+    foreach ($arr as $a => $b) {
+        echo $a, $b;
+    }
 
-    $arr1 = $arr;
-    $arr1 = $arr;
-    $arr1 = $arr;
-
-    echo $arr;
+    $assocArray = ["Key1" => "1", "Key2" => "2421"];
+    foreach ($assocArray as $a => $b) {
+        echo $a, $b;
+    }
 }

@@ -37,6 +37,8 @@ func (b *BlockWalker) EnterNode(w walker.Walkable) bool {
 		return b.handleAssign(n)
 	case *stmt.For:
 		return b.handleFor(n)
+	case *stmt.Foreach:
+		return b.handleForeach(n)
 	case *stmt.While:
 		return b.handleWhile(n)
 	case *stmt.If:
@@ -80,6 +82,50 @@ func (b *BlockWalker) handleFor(f *stmt.For) bool {
 
 	for _, aftereffect := range f.Loop {
 		aftereffect.Walk(w)
+	}
+
+	f.Stmt.Walk(w)
+
+	f.Ctx = w.Ctx
+
+	return false
+}
+
+func (b *BlockWalker) handleForeach(f *stmt.Foreach) bool {
+	w := &BlockWalker{
+		Ctx: ctx.Context{
+			Parent:          &b.Ctx,
+			Variables:       variable.NewTable(),
+			CurrentFunction: b.Context().CurrentFunction,
+		},
+	}
+
+	f.Expr.Walk(w)
+
+	switch f := f.Expr.(type) {
+	case *expr.Variable:
+		varName := f.VarName.(*node.Identifier).Value
+		f.Var, _ = b.Ctx.GetVariable(varName)
+	}
+
+	exprType := solver.ExprType(&w.Ctx, f.Expr)
+
+	if f.Key != nil {
+		switch f := f.Key.(type) {
+		case *expr.Variable:
+			varName := f.VarName.(*node.Identifier).Value
+			w.Ctx.Variables.Add(varName, exprType.KeyType())
+			f.Var, _ = w.Ctx.Variables.Get(varName)
+		}
+	}
+
+	if f.Variable != nil {
+		switch f := f.Variable.(type) {
+		case *expr.Variable:
+			varName := f.VarName.(*node.Identifier).Value
+			w.Ctx.Variables.Add(varName, exprType.ElementType())
+			f.Var, _ = w.Ctx.Variables.Get(varName)
+		}
 	}
 
 	f.Stmt.Walk(w)

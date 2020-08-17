@@ -46,6 +46,16 @@ func (ts *Types) ElementType() Types {
 	return res
 }
 
+func (ts *Types) KeyType() Types {
+	var res Types
+
+	for _, t := range ts.Types {
+		res.Merge(t.KeysTypes)
+	}
+
+	return res
+}
+
 func (ts *Types) SingleType() bool {
 	return ts.Len() == 1
 }

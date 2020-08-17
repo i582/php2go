@@ -66,7 +66,7 @@ function Foo() {
   for ($i = 0; $i < 20; $i++) {
     echo $i + 5;
   }
-  $qw = 1.5;
+  $qw = 1;
   // different operators
-  echo $qw + 5 - 56.56 * 6 / 56;
+  echo $qw + 5.5 - 56.56 * 6 / 56;
 }

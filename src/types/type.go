@@ -77,7 +77,7 @@ func (t Type) String() string {
 
 	case Arr:
 		arr := t.Array
-		keys := arr.KeysType.String()
+		keys := arr.KeysTypes.String()
 		elems := arr.ElemTypes.String()
 
 		if t.IsAssociative {
@@ -117,7 +117,7 @@ func (t Type) ElementTypes() (Types, bool) {
 }
 
 type Array struct {
-	KeysType  Types
+	KeysTypes Types
 	ElemTypes Types
 	ArrayDim  uint8
 
@@ -129,7 +129,7 @@ func NewAssociativeArrayType(keyTypes Types, elemTypes Types, dim uint8) Type {
 		BaseType: Arr,
 
 		Array: Array{
-			KeysType:      keyTypes,
+			KeysTypes:     keyTypes,
 			ElemTypes:     elemTypes,
 			ArrayDim:      dim,
 			IsAssociative: true,
@@ -142,7 +142,7 @@ func NewPlainArrayType(elemTypes Types, dim uint8) Type {
 		BaseType: Arr,
 
 		Array: Array{
-			KeysType: Types{Types: []Type{{
+			KeysTypes: Types{Types: []Type{{
 				BaseType: Integer,
 			}}},
 			ElemTypes:     elemTypes,

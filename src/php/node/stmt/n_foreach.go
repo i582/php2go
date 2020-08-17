@@ -1,6 +1,7 @@
 package stmt
 
 import (
+	"github.com/i582/php2go/src/ctx"
 	"github.com/i582/php2go/src/php/freefloating"
 	"github.com/i582/php2go/src/php/node"
 	"github.com/i582/php2go/src/php/position"
@@ -15,6 +16,8 @@ type Foreach struct {
 	Key          node.Node
 	Variable     node.Node
 	Stmt         node.Node
+
+	Ctx ctx.Context
 }
 
 // NewForeach node constructor

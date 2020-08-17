@@ -2,17 +2,17 @@
 package full
 
 import (
-	"fmt"
+   "fmt"
 )
 
 type ValueType uint8
 
 const (
-	Constantint64                          ValueType = iota
-	Constantfloat64                        ValueType = iota
-	Constantstring                         ValueType = iota
-	Constantbool                           ValueType = iota
-	ConstantElementTypeint64               ValueType = iota
+	Constantint64 ValueType = iota
+	Constantfloat64 ValueType = iota
+	Constantstring ValueType = iota
+	Constantbool ValueType = iota
+	ConstantElementTypeint64 ValueType = iota
 	ConstantmapWithKeystringWithValueint64 ValueType = iota
 )
 
@@ -27,6 +27,8 @@ func NewVar() Var {
 
 func (v *Var) Bool() bool {
 	switch v.Type {
+	case ConstantElementTypeint64:
+		return false
 	case ConstantmapWithKeystringWithValueint64:
 		return false
 	case Constantint64:
@@ -37,8 +39,6 @@ func (v *Var) Bool() bool {
 		return v.Val.(string) != ""
 	case Constantbool:
 		return v.Val.(bool)
-	case ConstantElementTypeint64:
-		return false
 	}
 
 	return false
@@ -63,6 +63,7 @@ func (v *Var) String() string {
 	return ""
 }
 
+
 type CompareType uint8
 
 const (
@@ -73,140 +74,6 @@ const (
 	Smaller
 	SmallerEqual
 )
-
-func (v *Var) CompareWithfloat64(val float64, compare CompareType) bool {
-	switch v.Type {
-	case Constantfloat64:
-		switch compare {
-		case Equal:
-			return v.Val.(float64) == val
-		case NotEqual:
-			return v.Val.(float64) != val
-		case Greater:
-			return v.Val.(float64) > val
-		case GreaterEqual:
-			return v.Val.(float64) >= val
-		case Smaller:
-			return v.Val.(float64) < val
-		case SmallerEqual:
-			return v.Val.(float64) <= val
-		}
-	case Constantstring:
-		return false
-	case Constantbool:
-		return false
-	case ConstantElementTypeint64:
-		return false
-	case ConstantmapWithKeystringWithValueint64:
-		return false
-	case Constantint64:
-		return false
-	}
-
-	return false
-}
-
-func (v *Var) CompareWithstring(val string, compare CompareType) bool {
-	switch v.Type {
-	case Constantint64:
-		return false
-	case Constantfloat64:
-		return false
-	case Constantstring:
-		switch compare {
-		case Equal:
-			return v.Val.(string) == val
-		case NotEqual:
-			return v.Val.(string) != val
-		case Greater:
-			return v.Val.(string) > val
-		case GreaterEqual:
-			return v.Val.(string) >= val
-		case Smaller:
-			return v.Val.(string) < val
-		case SmallerEqual:
-			return v.Val.(string) <= val
-		}
-	case Constantbool:
-		return false
-	case ConstantElementTypeint64:
-		return false
-	case ConstantmapWithKeystringWithValueint64:
-		return false
-	}
-
-	return false
-}
-
-func (v *Var) CompareWithbool(val bool, compare CompareType) bool {
-	switch v.Type {
-	case Constantbool:
-		switch compare {
-		case Equal:
-			return v.Val.(bool) == val
-		case NotEqual:
-			return v.Val.(bool) != val
-		case Greater:
-			return false
-		case GreaterEqual:
-			return false
-		case Smaller:
-			return false
-		case SmallerEqual:
-			return false
-		}
-	case ConstantElementTypeint64:
-		return false
-	case ConstantmapWithKeystringWithValueint64:
-		return false
-	case Constantint64:
-		return false
-	case Constantfloat64:
-		return false
-	case Constantstring:
-		return false
-	}
-
-	return false
-}
-
-func (v *Var) CompareWithElementTypeint64(val []int64, compare CompareType) bool {
-	switch v.Type {
-	case Constantstring:
-		return false
-	case Constantbool:
-		return false
-	case ConstantElementTypeint64:
-		return false
-	case ConstantmapWithKeystringWithValueint64:
-		return false
-	case Constantint64:
-		return false
-	case Constantfloat64:
-		return false
-	}
-
-	return false
-}
-
-func (v *Var) CompareWithmapWithKeystringWithValueint64(val map[string]int64, compare CompareType) bool {
-	switch v.Type {
-	case Constantint64:
-		return false
-	case Constantfloat64:
-		return false
-	case Constantstring:
-		return false
-	case Constantbool:
-		return false
-	case ConstantElementTypeint64:
-		return false
-	case ConstantmapWithKeystringWithValueint64:
-		return false
-	}
-
-	return false
-}
 
 func (v *Var) CompareWithint64(val int64, compare CompareType) bool {
 	switch v.Type {
@@ -240,8 +107,138 @@ func (v *Var) CompareWithint64(val int64, compare CompareType) bool {
 	return false
 }
 
-func (v *Var) Getfloat64() float64 {
-	return v.Val.(float64)
+func (v *Var) CompareWithfloat64(val float64, compare CompareType) bool {
+	switch v.Type {
+	case ConstantmapWithKeystringWithValueint64:
+		return false
+	case Constantint64:
+		return false
+	case Constantfloat64:
+		switch compare {
+		case Equal:
+			return v.Val.(float64) == val
+		case NotEqual:
+			return v.Val.(float64) != val
+		case Greater:
+			return v.Val.(float64) > val
+		case GreaterEqual:
+			return v.Val.(float64) >= val
+		case Smaller:
+			return v.Val.(float64) < val
+		case SmallerEqual:
+			return v.Val.(float64) <= val
+		}
+	case Constantstring:
+		return false
+	case Constantbool:
+		return false
+	case ConstantElementTypeint64:
+		return false
+	}
+
+	return false
+}
+
+func (v *Var) CompareWithstring(val string, compare CompareType) bool {
+	switch v.Type {
+	case Constantfloat64:
+		return false
+	case Constantstring:
+		switch compare {
+		case Equal:
+			return v.Val.(string) == val
+		case NotEqual:
+			return v.Val.(string) != val
+		case Greater:
+			return v.Val.(string) > val
+		case GreaterEqual:
+			return v.Val.(string) >= val
+		case Smaller:
+			return v.Val.(string) < val
+		case SmallerEqual:
+			return v.Val.(string) <= val
+		}
+	case Constantbool:
+		return false
+	case ConstantElementTypeint64:
+		return false
+	case ConstantmapWithKeystringWithValueint64:
+		return false
+	case Constantint64:
+		return false
+	}
+
+	return false
+}
+
+func (v *Var) CompareWithbool(val bool, compare CompareType) bool {
+	switch v.Type {
+	case Constantint64:
+		return false
+	case Constantfloat64:
+		return false
+	case Constantstring:
+		return false
+	case Constantbool:
+		switch compare {
+		case Equal:
+			return v.Val.(bool) == val
+		case NotEqual:
+			return v.Val.(bool) != val
+		case Greater:
+			return false
+		case GreaterEqual:
+			return false
+		case Smaller:
+			return false
+		case SmallerEqual:
+			return false
+		}
+	case ConstantElementTypeint64:
+		return false
+	case ConstantmapWithKeystringWithValueint64:
+		return false
+	}
+
+	return false
+}
+
+func (v *Var) CompareWithElementTypeint64(val []int64, compare CompareType) bool {
+	switch v.Type {
+	case Constantint64:
+		return false
+	case Constantfloat64:
+		return false
+	case Constantstring:
+		return false
+	case Constantbool:
+		return false
+	case ConstantElementTypeint64:
+		return false
+	case ConstantmapWithKeystringWithValueint64:
+		return false
+	}
+
+	return false
+}
+
+func (v *Var) CompareWithmapWithKeystringWithValueint64(val map[string]int64, compare CompareType) bool {
+	switch v.Type {
+	case ConstantmapWithKeystringWithValueint64:
+		return false
+	case Constantint64:
+		return false
+	case Constantfloat64:
+		return false
+	case Constantstring:
+		return false
+	case Constantbool:
+		return false
+	case ConstantElementTypeint64:
+		return false
+	}
+
+	return false
 }
 
 func (v *Var) Getstring() string {
@@ -264,32 +261,36 @@ func (v *Var) Getint64() int64 {
 	return v.Val.(int64)
 }
 
-func (v *Var) Setstring(val string) {
+func (v *Var) Getfloat64() float64 {
+	return v.Val.(float64)
+}
+
+func (v *Var) Setstring(val string)  {
 	v.Val = val
 	v.Type = Constantstring
 }
 
-func (v *Var) Setbool(val bool) {
+func (v *Var) Setbool(val bool)  {
 	v.Val = val
 	v.Type = Constantbool
 }
 
-func (v *Var) SetElementTypeint64(val []int64) {
+func (v *Var) SetElementTypeint64(val []int64)  {
 	v.Val = val
 	v.Type = ConstantElementTypeint64
 }
 
-func (v *Var) SetmapWithKeystringWithValueint64(val map[string]int64) {
+func (v *Var) SetmapWithKeystringWithValueint64(val map[string]int64)  {
 	v.Val = val
 	v.Type = ConstantmapWithKeystringWithValueint64
 }
 
-func (v *Var) Setint64(val int64) {
+func (v *Var) Setint64(val int64)  {
 	v.Val = val
 	v.Type = Constantint64
 }
 
-func (v *Var) Setfloat64(val float64) {
+func (v *Var) Setfloat64(val float64)  {
 	v.Val = val
 	v.Type = Constantfloat64
 }
@@ -303,8 +304,8 @@ func Foo() {
 	fmt.Print(b)
 	fmt.Print(c)
 	fmt.Print(d)
-	var e int64
 	var f Var
+	var e int64
 	if a == 100 {
 		e = 10
 	} else {
@@ -339,6 +340,7 @@ func Foo() {
 	for i = 0; i < 20; i++ {
 		fmt.Print(i + 5)
 	}
-	qw := 1.5
-	fmt.Print(qw + float64(5) - 56.56*float64(6)/float64(56))
+	qw := 1
+	fmt.Print(float64(qw) + 5.5 - 56.56 * float64(6) / float64(56))
 }
+

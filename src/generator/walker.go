@@ -91,6 +91,8 @@ func (g *GeneratorWalker) EnterNode(w walker.Walkable) bool {
 
 	case *stmt.For:
 		return g.GenerateFor(n)
+	case *stmt.Foreach:
+		return g.GenerateForeach(n)
 	case *stmt.While:
 		return g.GenerateWhile(n)
 	case *stmt.If:
@@ -349,6 +351,40 @@ func (g *GeneratorWalker) GenerateFor(f *stmt.For) bool {
 	}
 
 	gg.Write(" {\n")
+	gg.indents++
+
+	f.Stmt.Walk(&gg)
+
+	gg.indents--
+	gg.GenerateIndents()
+	gg.Write("}\n")
+
+	return false
+}
+
+func (g *GeneratorWalker) GenerateForeach(f *stmt.Foreach) bool {
+	gg := g.WithContext(&f.Ctx)
+
+	gg.GenerateIndents()
+	gg.Write("for ")
+
+	if f.Key != nil {
+		f.Key.Walk(&gg)
+	} else {
+		gg.Write("_")
+	}
+
+	if f.Variable != nil {
+		gg.Write(", ")
+		f.Variable.Walk(&gg)
+	}
+
+	gg.Write(" := range ")
+
+	f.Expr.Walk(&gg)
+
+	gg.Write(" {\n")
+
 	gg.indents++
 
 	f.Stmt.Walk(&gg)
