@@ -11,6 +11,7 @@ const (
 	Float
 	Bool
 	String
+	Null
 
 	Arr
 
@@ -74,6 +75,8 @@ func (t Type) String() string {
 		str += "bool"
 	case Void:
 		str += "void"
+	case Null:
+		str += "null"
 
 	case Arr:
 		arr := t.Array

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/i582/php2go/program"
+	null "github.com/i582/php2go/program/main/test"
 )
 
 func main() {
-	full.Foo()
+	null.Foo2()
 }

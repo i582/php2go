@@ -25,6 +25,9 @@ func (v *VarInfo) AddTypes(types Types) {
 }
 
 func (v *VarInfo) Generate() string {
+	_, containsNull := v.Fields["null"]
+	delete(v.Fields, "null")
+
 	var res string
 
 	res += "\n"
@@ -33,6 +36,9 @@ func (v *VarInfo) Generate() string {
 	var constants string
 	for f := range v.Fields {
 		constants += "\tConstant" + utils.TransformType(f) + " ValueType = iota\n"
+	}
+	if containsNull {
+		constants += "\tConstantnull\n"
 	}
 	res += "\n"
 
@@ -118,6 +124,12 @@ func NewVar() Var {
 		}
 
 		res += fmt.Sprintf(caseTemplate, utils.TransformType(f), code)
+	}
+
+	if containsNull {
+		res += `	case Constantnull:
+		return "null"
+`
 	}
 
 	res += `	}
@@ -224,12 +236,56 @@ func NewVar() Var {
 `
 	}
 
+	if containsNull {
+		for f := range v.Fields {
+			compareWithNull := `func (v *Var) CompareWithnull(val %s, compare CompareType) bool {
+	switch compare {
+	case Equal:
+		return v.Type == Constantnull
+	case NotEqual:
+		return v.Type != Constantnull
+	case Greater:
+		return false
+	case GreaterEqual:
+		return v.Type == Constantnull
+	case Smaller:
+		return false
+	case SmallerEqual:
+		return v.Type == Constantnull
+	}
+
+	return false
+}
+
+`
+			res += fmt.Sprintf(compareWithNull, f)
+		}
+	}
+
 	for f := range v.Fields {
 		res += fmt.Sprintf(getterTemplate, utils.TransformType(f), f, f)
 	}
 
 	for f := range v.Fields {
 		res += fmt.Sprintf(setterTemplate, utils.TransformType(f), f, utils.TransformType(f))
+	}
+
+	if containsNull {
+		getterNullTemplate := `func (v *Var) Getnull() int64 {
+	return v.Val.(int64)
+}
+
+`
+
+		setterNullTemplate := `func (v *Var) Setnull()  {
+	v.Val = 0
+	v.Type = Constantnull
+}
+
+`
+
+		res += getterNullTemplate
+		res += setterNullTemplate
 	}
 
 	return res

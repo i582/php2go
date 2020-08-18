@@ -108,6 +108,8 @@ func (g *GeneratorWalker) EnterNode(w walker.Walkable) bool {
 		val := utils.NamePartsToString(n.Parts)
 		if val == "true" || val == "false" {
 			g.Write(val)
+		} else if strings.EqualFold(val, "null") {
+			g.Write("0")
 		}
 
 	case *binary.Plus:
@@ -557,6 +559,8 @@ func (g *GeneratorWalker) GenerateReturn(r *stmt.Return) bool {
 	}
 
 	if need {
+		g.Write(", Type: ")
+		g.Write(fmt.Sprintf("Constant%s", solver.ExprType(g.ctx, r.Expr).String()))
 		g.Write(" }")
 	}
 
@@ -577,7 +581,7 @@ func (g *GeneratorWalker) GenerateFunctionCall(fn *expr.FunctionCall) bool {
 
 func (g *GeneratorWalker) GenerateAssign(a *assign.Assign) bool {
 	e := a.Expression
-	tp := solver.ExprType(g.ctx, e)
+	expressionType := solver.ExprType(g.ctx, e)
 
 	switch a := a.Variable.(type) {
 	case *expr.Variable:
@@ -586,13 +590,13 @@ func (g *GeneratorWalker) GenerateAssign(a *assign.Assign) bool {
 			vr.Type = solver.ResolveTypes(g.ctx, vr.Type)
 		}
 
-		if !vr.Type.ContainsMap(tp) {
-			vr.Type.Merge(tp)
+		if !vr.Type.ContainsMap(expressionType) {
+			vr.Type.Merge(expressionType)
 		}
 		g.varInfo.AddTypes(vr.Type)
 
-		vr.CurrentType = tp
-		singleType := tp.SingleType()
+		vr.CurrentType = expressionType
+		singleType := expressionType.SingleType()
 
 		g.ctx.InAssign = true
 

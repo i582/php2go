@@ -1,6 +1,8 @@
 package solver
 
 import (
+	"strings"
+
 	"github.com/i582/php2go/src/php/node"
 	"github.com/i582/php2go/src/php/node/expr"
 	"github.com/i582/php2go/src/php/node/expr/binary"
@@ -67,10 +69,13 @@ func ExprTypeLocal(ctx *ctx.Context, n node.Node) types.Types {
 	case *scalar.String:
 		return types.NewBaseTypes(types.String)
 	case *name.Name:
-		nm := n.Parts[0].(*name.NamePart).Value
+		nm := utils.NamePartsToString(n.Parts)
 		if nm == "true" || nm == "false" {
 			return types.NewBaseTypes(types.Bool)
+		} else if strings.EqualFold(nm, "null") {
+			return types.NewBaseTypes(types.Null)
 		}
+
 	case *expr.ConstFetch:
 		return ExprTypeLocal(ctx, n.Constant)
 
