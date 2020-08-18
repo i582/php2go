@@ -31,10 +31,11 @@ php2go [flags]
 
 **Types**:
 
-1. Integer
-2. Float
-3. String
-4. Bool
+1. `Integer`
+2. `Float`
+3. `String`
+4. `Bool`
+5. `Null`
 
 Union types composed of the types above are also supported.
 
@@ -63,6 +64,7 @@ The following language constructs are available:
 1. `if-else`
 2. `for`
 3. `while`
+4. `foreach`
 
 **Currently only code in function is supported.**
 
