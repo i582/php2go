@@ -44,10 +44,11 @@ func ExprType(ctx *ctx.Context, n node.Node) types.Types {
 
 func ExprTypeLocal(ctx *ctx.Context, n node.Node) types.Types {
 	switch n := n.(type) {
-
 	case *expr.FunctionCall:
 		fnName := utils.NamePartsToString(n.Function.(*name.Name).Parts)
 		return types.NewTypes(types.NewLazyFunctionCallType(fnName))
+	case *node.Argument:
+		return ExprTypeLocal(ctx, n.Expr)
 
 	case *expr.Variable:
 		nm := n.VarName.(*node.Identifier).Value

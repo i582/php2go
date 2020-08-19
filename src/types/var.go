@@ -28,17 +28,22 @@ func (v *VarInfo) Generate() string {
 	_, containsNull := v.Fields["null"]
 	delete(v.Fields, "null")
 
+	isTFunctionTypes := []string{
+		"int64",
+		"float64",
+		"string",
+		"bool",
+		"null",
+	}
+
 	var res string
 
 	res += "\n"
 	res += "type ValueType uint8\n"
 
 	var constants string
-	for f := range v.Fields {
+	for _, f := range isTFunctionTypes {
 		constants += "\tConstant" + utils.TransformType(f) + " ValueType = iota\n"
-	}
-	if containsNull {
-		constants += "\tConstantnull\n"
 	}
 	res += "\n"
 
@@ -286,6 +291,34 @@ func NewVar() Var {
 
 		res += getterNullTemplate
 		res += setterNullTemplate
+	}
+
+	isTFunctionTemplate := `func Is%s(val Var) bool {
+`
+
+	for _, fieldFor := range isTFunctionTypes {
+		res += fmt.Sprintf(isTFunctionTemplate, fieldFor)
+		res += fmt.Sprintf(`	return val.Type == Constant%s
+`, utils.TransformType(fieldFor))
+		res += `}
+
+`
+	}
+
+	isTForSimpleTypeFunctionTemplate := `func Is%sSimple(val interface{}) bool {
+`
+
+	for _, fieldFor := range isTFunctionTypes {
+		if fieldFor == "null" {
+			continue
+		}
+
+		res += fmt.Sprintf(isTForSimpleTypeFunctionTemplate, fieldFor)
+		res += fmt.Sprintf("\t_, ok := val.(%s)\n", fieldFor)
+		res += "\treturn ok\n"
+		res += `}
+
+`
 	}
 
 	return res

@@ -33,9 +33,9 @@ func (v *Variable) GenerateDefinition() string {
 	return fmt.Sprintf("%s := New%s()\n", v.Name, name)
 }
 
-func (v *Variable) GenerateAccess(set, inPrint, inCompare, inBoolean bool) string {
+func (v *Variable) GenerateAccess(set, inPrint, inCompare, inBoolean, inIsT bool) string {
 	var field string
-	if v.CurrentType.SingleType() && !v.Type.SingleType() {
+	if v.CurrentType.SingleType() && !v.Type.SingleType() && !inIsT {
 		if set {
 			field = ".Set" + utils.TransformType(v.CurrentType.String()) + "("
 		} else {

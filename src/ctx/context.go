@@ -15,6 +15,7 @@ type Context struct {
 	InCondition         bool
 	InCompare           bool
 	InBoolean           bool
+	InIsTFunction       bool
 }
 
 func (c Context) GetVariable(name string) (*variable.Variable, bool) {

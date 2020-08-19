@@ -99,7 +99,7 @@ func (g *GeneratorWalker) EnterNode(w walker.Walkable) bool {
 		return g.GenerateIf(n)
 
 	case *scalar.Lnumber:
-		g.Write(n.Value)
+		g.Write(fmt.Sprintf("int64(%s)", n.Value))
 	case *scalar.Dnumber:
 		g.Write(n.Value)
 	case *scalar.String:
@@ -569,8 +569,60 @@ func (g *GeneratorWalker) GenerateReturn(r *stmt.Return) bool {
 	return false
 }
 
+var isTFunctions = map[string]struct{}{
+	"is_int":    {},
+	"is_float":  {},
+	"is_bool":   {},
+	"is_string": {},
+	"is_null":   {},
+	"is_array":  {},
+}
+
+func (g *GeneratorWalker) GenerateFunctionIsT(fn *expr.FunctionCall, fnName string) bool {
+	argType := solver.ExprType(g.ctx, fn.ArgumentList.Arguments[0])
+
+	g.ctx.InIsTFunction = true
+	var callFunctionName string
+	switch fnName {
+	case "is_int":
+		callFunctionName = "Isint64"
+	case "is_float":
+		callFunctionName = "Isfloat64"
+	case "is_bool":
+		callFunctionName = "Isbool64"
+	case "is_string":
+		callFunctionName = "Isstring"
+	case "is_null":
+		callFunctionName = "Isnull"
+	case "is_array":
+		callFunctionName = "Isarray"
+
+	default:
+		g.ctx.InIsTFunction = false
+		return false
+	}
+
+	if argType.SingleType() {
+		g.Write(callFunctionName + "Simple(")
+		fn.ArgumentList.Walk(g)
+		g.Write(")")
+	} else {
+		g.Write(callFunctionName + "(")
+		fn.ArgumentList.Walk(g)
+		g.Write(")")
+	}
+
+	g.ctx.InIsTFunction = false
+
+	return false
+}
+
 func (g *GeneratorWalker) GenerateFunctionCall(fn *expr.FunctionCall) bool {
 	fnName := utils.NamePartsToString(fn.Function.(*name.Name).Parts)
+
+	if _, ok := isTFunctions[fnName]; ok {
+		return g.GenerateFunctionIsT(fn, fnName)
+	}
 
 	g.Write(fnName + "(")
 	fn.ArgumentList.Walk(g)
@@ -650,7 +702,7 @@ func (g *GeneratorWalker) GenerateVariable(v *expr.Variable) bool {
 	}
 
 	g.varInfo.AddTypes(v.Var.Type)
-	g.Write(v.Var.GenerateAccess(g.ctx.InAssign, g.ctx.InPrintFunctionCall, g.ctx.InCompare, g.ctx.InBoolean))
+	g.Write(v.Var.GenerateAccess(g.ctx.InAssign, g.ctx.InPrintFunctionCall, g.ctx.InCompare, g.ctx.InBoolean, g.ctx.InIsTFunction))
 
 	return false
 }
