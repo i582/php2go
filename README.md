@@ -45,6 +45,14 @@ Union types composed of the types above are also supported.
 2. Use in conditions and boolean expressions;
 3. Printing.
 
+**`is_t` functions**
+
+1. `is_int`
+2. `is_float`
+3. `is_string`
+4. `is_bool`
+5. `is_null`
+
 **Operators**
 
 Supported arithmetic operators (`+`,`-`,`*`,`/` ,`.`,`++`,`--`) and 
