@@ -80,3 +80,32 @@ func Foo() {
 
 	s.RunTest()
 }
+
+func TestGetCurrentType(t *testing.T) {
+	s := testsuite.NewSuite(t)
+	s.AddFile([]byte(`<?php
+function Foo() {
+	$a = 5; // int
+	$a = "Hello"; // string
+	
+	$b = $a;
+	echo $b;
+}
+`))
+
+	s.AddExpected([]byte(`
+package test
+import (
+	"fmt"
+)
+func Foo() {
+	a := NewVar()
+	a.Setint64(int64(5))
+	a.Setstring("Hello")
+	b = a.Getstring()
+	fmt.Print(b)
+}
+`))
+
+	s.RunTest()
+}

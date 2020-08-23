@@ -26,6 +26,7 @@ func (v Variable) String() string {
 
 func (v *Variable) AddType(ts types.Types) {
 	v.Type.Merge(ts)
+	v.CurrentType = ts
 }
 
 func (v *Variable) GenerateDefinition() string {
@@ -33,12 +34,12 @@ func (v *Variable) GenerateDefinition() string {
 	return fmt.Sprintf("%s := New%s()\n", v.Name, name)
 }
 
-func (v *Variable) GenerateAccess(set, inPrint, inCompare, inBoolean, inIsT bool) string {
+func (v *Variable) GenerateAccess(inAssignLvalue, inAssignRvalue, inPrint, inCompare, inBoolean, inIsT bool) string {
 	var field string
 	if v.CurrentType.SingleType() && !v.Type.SingleType() && !inIsT {
-		if set {
+		if inAssignLvalue {
 			field = ".Set" + utils.TransformType(v.CurrentType.String()) + "("
-		} else {
+		} else if inAssignRvalue {
 			field = ".Get" + utils.TransformType(v.CurrentType.String()) + "()"
 		}
 	} else if inBoolean && !inCompare && !v.Type.SingleType() {

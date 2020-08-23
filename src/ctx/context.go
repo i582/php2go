@@ -10,7 +10,8 @@ type Context struct {
 	Variables       variable.Table
 	CurrentFunction *function.Function
 
-	InAssign            bool
+	InAssignLvalue      bool
+	InAssignRvalue      bool
 	InPrintFunctionCall bool
 	InCondition         bool
 	InCompare           bool

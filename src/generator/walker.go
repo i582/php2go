@@ -666,9 +666,11 @@ func (g *GeneratorWalker) GenerateAssign(a *assign.Assign) bool {
 		vr.CurrentType = expressionType
 		singleType := expressionType.SingleType()
 
-		g.ctx.InAssign = true
-
+		g.ctx.InAssignLvalue = true
 		a.Walk(g)
+		g.ctx.InAssignLvalue = false
+
+		g.ctx.InAssignRvalue = true
 
 		if vr.WasInitialize && !(singleType && !vr.Type.SingleType()) {
 			g.Write(" = ")
@@ -683,7 +685,7 @@ func (g *GeneratorWalker) GenerateAssign(a *assign.Assign) bool {
 			g.Write(")")
 		}
 
-		g.ctx.InAssign = false
+		g.ctx.InAssignRvalue = false
 
 	case *expr.ArrayDimFetch:
 		isAddingElement := a.Dim == nil
@@ -718,7 +720,7 @@ func (g *GeneratorWalker) GenerateVariable(v *expr.Variable) bool {
 	}
 
 	g.varInfo.AddTypes(v.Var.Type)
-	g.Write(v.Var.GenerateAccess(g.ctx.InAssign, g.ctx.InPrintFunctionCall, g.ctx.InCompare, g.ctx.InBoolean, g.ctx.InIsTFunction))
+	g.Write(v.Var.GenerateAccess(g.ctx.InAssignLvalue, g.ctx.InAssignRvalue, g.ctx.InPrintFunctionCall, g.ctx.InCompare, g.ctx.InBoolean, g.ctx.InIsTFunction))
 
 	return false
 }

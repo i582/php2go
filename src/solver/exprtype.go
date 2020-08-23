@@ -56,6 +56,10 @@ func ExprTypeLocal(ctx *ctx.Context, n node.Node) types.Types {
 		if !ok {
 			panic("variable not found")
 		}
+		if v.CurrentType.Len() != 0 {
+			return v.CurrentType
+		}
+
 		return v.Type
 
 	case *expr.ShortArray:
