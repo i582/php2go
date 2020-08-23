@@ -7,7 +7,8 @@ import (
 )
 
 type VarInfo struct {
-	Fields map[string]struct{}
+	Fields       map[string]struct{}
+	NeedGenerate bool
 }
 
 func NewVarInfo() VarInfo {
@@ -19,6 +20,10 @@ func (v *VarInfo) Add(f string) {
 }
 
 func (v *VarInfo) AddTypes(types Types) {
+	if types.Len() > 1 {
+		v.NeedGenerate = true
+	}
+
 	for _, t := range types.Types {
 		v.Fields[t.String()] = struct{}{}
 	}
@@ -36,15 +41,25 @@ func (v *VarInfo) Generate() string {
 		"null",
 	}
 
+	for _, tp := range isTFunctionTypes {
+		if tp == "null" {
+			continue
+		}
+
+		v.Fields[tp] = struct{}{}
+	}
+
 	var res string
 
 	res += "\n"
 	res += "type ValueType uint8\n"
 
 	var constants string
-	for _, f := range isTFunctionTypes {
+	for f := range v.Fields {
 		constants += "\tConstant" + utils.TransformType(f) + " ValueType = iota\n"
 	}
+	constants += "\tConstantnull ValueType = iota\n"
+
 	res += "\n"
 
 	res += "const (\n"
