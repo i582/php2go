@@ -50,10 +50,9 @@ function Foo() {
 	$b = "string";
 
 	if ($a == "") {
-		$b = 12.56;
+		$b = 12;
 	}
 
-	echo $b;
 }
 `))
 
@@ -71,10 +70,9 @@ func Foo() {
 	fmt.Print(a.Getstring())
 	b := NewVar()
 	b.Setstring("string")
-	if a.CompareWithstring("", Equal) {
-		b.Setfloat64(12.56)
+	if a.Getstring() == "" {
+		b.Setint64(int64(12))
 	}
-	fmt.Print(b.Getfloat64())
 }
 `))
 
@@ -95,14 +93,16 @@ function Foo() {
 
 	s.AddExpected([]byte(`
 package test
+
 import (
 	"fmt"
 )
+
 func Foo() {
 	a := NewVar()
 	a.Setint64(int64(5))
 	a.Setstring("Hello")
-	b = a.Getstring()
+	b := a.Getstring()
 	fmt.Print(b)
 }
 `))

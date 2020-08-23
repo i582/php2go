@@ -160,6 +160,9 @@ func (b *BlockWalker) handleIf(i *stmt.If) bool {
 			CurrentFunction: b.Ctx.CurrentFunction,
 		},
 	}
+
+	w.Ctx.InBranching = true
+
 	i.Cond.Walk(b)
 	i.Stmt.Walk(w)
 
@@ -190,6 +193,8 @@ func (b *BlockWalker) handleIf(i *stmt.If) bool {
 	i.IfCtx = w.Ctx
 	i.ElseCtx = ww.Ctx
 
+	w.Ctx.InBranching = false
+
 	return false
 }
 
@@ -219,7 +224,7 @@ func (b *BlockWalker) handleAssign(a *assign.Assign) bool {
 		var ok bool
 		a.Var, ok = b.Ctx.GetVariable(varName)
 		if ok {
-			a.Var.AddType(solver.ExprTypeLocal(&b.Ctx, e))
+			a.Var.AddType(solver.ExprTypeLocal(&b.Ctx, e), b.Ctx.InBranching)
 		} else {
 			b.Ctx.Variables.Add(varName, solver.ExprTypeLocal(&b.Ctx, e))
 			a.Var, _ = b.Ctx.Variables.Get(varName)

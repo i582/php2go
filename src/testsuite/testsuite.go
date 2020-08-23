@@ -60,6 +60,6 @@ func (s *Suite) RunTest() {
 	expected = strings.TrimPrefix(expected, "\n")
 
 	if !cmp.Equal(want, expected) {
-		s.t.Error(cmp.Diff(want, expected))
+		s.t.Errorf("%s\nwant:\n%s\nhave:\n%s", cmp.Diff(want, expected), want, expected)
 	}
 }

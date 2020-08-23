@@ -17,6 +17,8 @@ type Context struct {
 	InCompare           bool
 	InBoolean           bool
 	InIsTFunction       bool
+
+	InBranching bool
 }
 
 func (c Context) GetVariable(name string) (*variable.Variable, bool) {

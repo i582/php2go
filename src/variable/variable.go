@@ -24,9 +24,13 @@ func (v Variable) String() string {
 	return fmt.Sprintf("$%s: %v", v.Name, v.Type)
 }
 
-func (v *Variable) AddType(ts types.Types) {
+func (v *Variable) AddType(ts types.Types, inBranching bool) {
 	v.Type.Merge(ts)
-	v.CurrentType = ts
+	if !inBranching {
+		v.CurrentType = ts
+	} else {
+		v.CurrentType = types.Types{}
+	}
 }
 
 func (v *Variable) GenerateDefinition() string {
@@ -36,18 +40,25 @@ func (v *Variable) GenerateDefinition() string {
 
 func (v *Variable) GenerateAccess(inAssignLvalue, inAssignRvalue, inPrint, inCompare, inBoolean, inIsT bool) string {
 	var field string
-	if v.CurrentType.SingleType() && !v.Type.SingleType() && !inIsT {
-		if inAssignLvalue {
-			field = ".Set" + utils.TransformType(v.CurrentType.String()) + "("
-		} else if inAssignRvalue {
-			field = ".Get" + utils.TransformType(v.CurrentType.String()) + "()"
+	varHasUnionType := !v.Type.SingleType()
+	currentTypeIsSingle := v.CurrentType.SingleType()
+
+	if varHasUnionType && !currentTypeIsSingle {
+		if inPrint {
+			return fmt.Sprintf("%s.String()", v.Name)
 		}
-	} else if inBoolean && !inCompare && !v.Type.SingleType() {
-		field = ".Bool()"
+
+		if inBoolean {
+			return fmt.Sprintf("%s.Bool()", v.Name)
+		}
 	}
 
-	if (v.CurrentType.Types == nil || !v.CurrentType.SingleType()) && !v.Type.SingleType() && inPrint {
-		field = ".String()"
+	if varHasUnionType && currentTypeIsSingle {
+		if inAssignLvalue {
+			field = ".Set" + utils.TransformType(v.CurrentType.String()) + "("
+		} else {
+			field = ".Get" + utils.TransformType(v.CurrentType.String()) + "()"
+		}
 	}
 
 	return fmt.Sprintf("%s%s", v.Name, field)

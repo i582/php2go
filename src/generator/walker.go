@@ -437,6 +437,8 @@ func (g *GeneratorWalker) GenerateWhile(wl *stmt.While) bool {
 func (g *GeneratorWalker) GenerateIf(i *stmt.If) bool {
 	gg := g.WithContext(&i.IfCtx)
 
+	gg.ctx.InBranching = true
+
 	for _, v := range g.ctx.Variables.Vars {
 		if v.FromIfElse && !v.WasInitialize {
 			gg.GenerateIndents()
@@ -471,6 +473,8 @@ func (g *GeneratorWalker) GenerateIf(i *stmt.If) bool {
 	} else {
 		gg.Write("\n")
 	}
+
+	gg.ctx.InBranching = false
 
 	return false
 }
@@ -605,7 +609,7 @@ func (g *GeneratorWalker) GenerateFunctionIsT(fn *expr.FunctionCall, fnName stri
 	case "is_float":
 		callFunctionName = "Isfloat64"
 	case "is_bool":
-		callFunctionName = "Isbool64"
+		callFunctionName = "Isbool"
 	case "is_string":
 		callFunctionName = "Isstring"
 	case "is_null":
