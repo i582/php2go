@@ -85,7 +85,6 @@ The `echo` operator is supported for output.
 ## TODO
 
 1. Add support for all operators;
-2. Add foreach support;
 3. Add support for other types;
 4. Add multi-file support;
 5. And much more...
