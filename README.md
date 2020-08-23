@@ -1,22 +1,18 @@
-#  ![](docs/logo.svg)
+# php2go
 
-**php2go** is a transpiler from a small subset of PHP to Go.
-
-<img src="docs/php2go.jpg" width="500px"/>
-
-*(photo by [Iskander Sharipov](https://github.com/quasilyte))*
-
-
+*php2go* is a transpiler from a small subset of PHP to Go.
 
 This tool is written in [Go](https://golang.org/) and uses [z7zmey/php-parser](https://github.com/z7zmey/php-parser).
 
-### Install
+## Get started
+
+#### Install
 
 ```
 go get github.com/i582/php2go
 ```
 
-### CLI
+#### CLI
 
 ```
 php2go [flags]
@@ -27,7 +23,7 @@ php2go [flags]
 | -i   | string | input file  |
 | -o   | string | output file |
 
-## What is currently supported.
+## What is currently supported
 
 **Types**:
 
@@ -74,22 +70,18 @@ The following language constructs are available:
 3. `while`
 4. `foreach`
 
-**Currently only code in function is supported.**
-
 **Output**
 
 The `echo` operator is supported for output.
 
-
+>  **Currently only code in function is supported.**
 
 ## TODO
 
 1. Add support for all operators;
-3. Add support for other types;
-4. Add multi-file support;
-5. And much more...
-
-
+2. Add support for other types;
+3. Add multi-file support;
+4. And much more...
 
 ## Example
 
@@ -178,10 +170,6 @@ import (
    "fmt"
 )
 
-// ...
-// defining structures for types. See program/full.go
-// ...
-
 func Foo() {
 	a := 100
 	b := 1.5
@@ -236,12 +224,15 @@ The `Var` structure is a container for Union types.
 
 
 
-## Contact
+## Contacts
+
 Name: Petr Makhnev
 
 E-Mail: mr.makhneff@gmail.com
 
-Telegram: @petr_makhnev
+Telegram: [@petr_makhnev](https://t.me/petr_makhnev)
+
+VK: [@petrmakhnev](https://vk.com/petrmakhnev)
 
 ## License
 
