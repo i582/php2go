@@ -8,7 +8,7 @@ install:
 
 check:
 	@echo "running tests..."
-	@go test -count 3 -race -v ./src/...
+	@go test -count 1 -race -v ./src/...
 	@echo "everything is OK"
 
 .PHONY: check
