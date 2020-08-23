@@ -37,3 +37,46 @@ func Foo() {
 
 	s.RunTest()
 }
+
+func TestEchoUnionType(t *testing.T) {
+	s := testsuite.NewSuite(t)
+	s.AddFile([]byte(`<?php
+function Foo() {
+	$a = 5; // int
+	$a = "Hello"; // string
+	
+	echo $a;
+
+	$b = "string";
+
+	if ($a == "") {
+		$b = 12.56;
+	}
+
+	echo $b;
+}
+`))
+
+	s.AddExpected([]byte(`
+package test
+
+import (
+	"fmt"
+)
+
+func Foo() {
+	a := NewVar()
+	a.Setint64(int64(5))
+	a.Setstring("Hello")
+	fmt.Print(a.Getstring())
+	b := NewVar()
+	b.Setstring("string")
+	if a.CompareWithstring("", Equal) {
+		b.Setfloat64(12.56)
+	}
+	fmt.Print(b.Getfloat64())
+}
+`))
+
+	s.RunTest()
+}
