@@ -10,7 +10,6 @@ import (
 	"strings"
 
 	"github.com/i582/php2go/src/generator"
-	"github.com/i582/php2go/src/meta"
 	"github.com/i582/php2go/src/php/php7"
 	"github.com/i582/php2go/src/root"
 )
@@ -31,9 +30,14 @@ func (t Translator) Run() {
 
 	flag.Parse()
 
+	inputFolder, _ := filepath.Split(inputFile)
+
 	if outputFile == "" {
 		dir, file := filepath.Split(inputFile)
 		outputFile = dir + strings.TrimSuffix(file, filepath.Ext(file)) + ".go"
+	} else {
+		dir, _ := filepath.Split(outputFile)
+		inputFolder = dir
 	}
 
 	src, err := ioutil.ReadFile(inputFile)
@@ -52,29 +56,22 @@ func (t Translator) Run() {
 	rootNode := parser.GetRootNode()
 	rootNode.Walk(&rw)
 
-	for _, v := range meta.AllVariables.Vars {
-		fmt.Println(v)
-	}
-
-	for _, f := range meta.AllFunctions.Functions {
-		fmt.Println(f)
-
-		for _, v := range f.Variables.Vars {
-			fmt.Println(v)
-		}
-	}
-
 	f, err := os.Create(outputFile)
 	if err != nil {
-		panic("file not created")
+		log.Fatalf("main file not created: %s", err)
 	}
 	defer f.Close()
 
-	gw := generator.NewGeneratorWalker(f, filepath.Base(inputFile))
+	core, err := os.Create(inputFolder + "/core.go")
+	if err != nil {
+		log.Fatalf("core file not created: %s", err)
+	}
+
+	gw := generator.NewGeneratorWalker(f, core, filepath.Base(inputFile))
 	rootNode.Walk(&gw)
 	gw.Final()
 
-	gw = generator.NewGeneratorWalker(os.Stdout, filepath.Base(inputFile))
+	gw = generator.NewGeneratorWalker(os.Stdout, os.Stdout, filepath.Base(inputFile))
 	rootNode.Walk(&gw)
 	gw.Final()
 }
